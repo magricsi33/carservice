@@ -16,7 +16,7 @@ class CreateCarsTable extends Migration
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
-            $table->string('car_id')->unique();
+            $table->integer('car_id');
             $table->string('type');
             $table->date('registered')->nullable();
             $table->boolean('ownbrand')->default(0);

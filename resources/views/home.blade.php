@@ -17,7 +17,7 @@
 
     <!-- Ügyfelek listája -->
     <h2 class="text-2xl font-bold my-3">Ügyfelek</h2>
-    <div class="grid grid-cols-2 gap-2">
+    <div class="grid grid-cols-3">
         <table class="w-full">
             <thead>
                 <tr>
@@ -29,7 +29,7 @@
             <tbody id="clientList" class="w-full"></tbody>
         </table>
     
-        <div>
+        <div class="col-span-2">
             <div id="clientCars"></div>
             <div id="carServices"></div>
         </div>
@@ -62,7 +62,11 @@
 
                     cars.forEach(car => {
                         html += `<tr>
-                        <td><a href="#" class="car-link underline text-blue-600" data-id="${car.id}">${car.car_id}</a></td>
+                        <td>
+                            <a href="#" class="car-link underline text-blue-600" data-id="${car.client.id}, ${car.car_id}">
+                                ${car.car_id}
+                            </a>
+                        </td>
                         <td>${car.type}</td>
                         <td>${car.registered || 'N/A'}</td>
                         <td>${car.ownbrand ? 'Igen' : 'Nem'}</td>
@@ -80,8 +84,15 @@
 
             // Autó adatainak betöltése
             $(document).on("click", ".car-link", function() {
-                let carId = $(this).data("id");
-                $.get(`/api/cars/${carId}/services`, function(services) {
+
+                let dataId = $(this).data("id");
+
+                let ids = dataId.split(',');
+
+                let clientId = ids[0];
+                let carId = ids[1];
+
+                $.get(`/api/cars/${clientId}/${carId}/services`, function(services) {
                     let html =
                         `
                         <h3 class="text-2xl font-bold mb-3 mt-6">Szerviz</h3>
@@ -97,7 +108,7 @@
                         html += `<tr>
                         <td>${service.lognumber}</td>
                         <td>${service.event}</td>
-                        <td>${service.eventtime || service.car.registered || 'N/A'}</td>
+                        <td>${service.car.registered}</td>
                         <td>${service.document_id}</td>
                     </tr>`;
                     });

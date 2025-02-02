@@ -16,7 +16,7 @@ class CreateServiceLogsTable extends Migration
         Schema::create('service_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
-            $table->foreignId('car_id')->constrained('cars')->onDelete('cascade');
+            $table->integer('car_id');
             $table->integer('lognumber');
             $table->string('event');
             $table->dateTime('eventtime')->nullable();

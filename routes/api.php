@@ -22,5 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/clients', [ClientController::class, 'index']);
 Route::get('/clients/{client_id}/cars', [ClientController::class, 'getClientCars']);
-Route::get('/cars/{car_id}/services', [ClientController::class, 'getCarServiceLogs']);
+Route::get('/cars/{client_id}/{car_id}/services', [ClientController::class, 'getCarServiceLogs']);
 Route::get('/search-client', [ClientController::class, 'searchClient']);

@@ -18,7 +18,7 @@ class Car extends Model
 
     public function serviceLogs()
     {
-        return $this->hasMany(ServiceLog::class);
+        return $this->hasMany(ServiceLog::class, 'client_id', 'client_id');
     }
 
 }

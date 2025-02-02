@@ -18,6 +18,6 @@ class ServiceLog extends Model
 
     public function car()
     {
-        return $this->belongsTo(Car::class);
+        return $this->belongsTo(Car::class, 'client_id', 'client_id');
     }
 }

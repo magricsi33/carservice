@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Car;
+use App\Models\ServiceLog;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -14,18 +16,18 @@ class ClientController extends Controller
 
     public function getClientCars($client_id)
     {
-        $cars = \App\Models\Car::where('client_id', $client_id)->orderBy('id', 'asc')->with('serviceLogs', 'client')->get();
 
+        $cars = Car::where('client_id', $client_id)
+        ->orderBy('id', 'asc')
+        ->with(['serviceLogs', 'client'])
+        ->get();
         return response()->json($cars);
     }
 
-    public function getCarServiceLogs($car_id)
+    public function getCarServiceLogs($client_id, $car_id)
     {
         return response()->json(
-            \App\Models\ServiceLog::where('car_id', $car_id)
-                ->orderBy('lognumber', 'desc')
-                ->with('car')
-                ->get()
+            ServiceLog::where('client_id', $client_id)->where('car_id', $car_id)->with('car')->get()
         );
     }
 
@@ -62,7 +64,7 @@ class ClientController extends Controller
 
         $client = $clients->first();
         $carCount = $client->cars()->count();
-        $serviceCount = \App\Models\ServiceLog::whereIn('car_id', $client->cars()->pluck('id'))->count();
+        $serviceCount = ServiceLog::whereIn('car_id', $client->cars()->pluck('id'))->count();
 
         return response()->json([
             'id' => $client->id,

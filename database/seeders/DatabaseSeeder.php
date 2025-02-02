@@ -29,17 +29,9 @@ class DatabaseSeeder extends Seeder
         }
 
         if (Car::count() === 0) {
-            try {
-                $cars = json_decode(file_get_contents(database_path('seeders/data/cars.json')), true);
-                foreach ($cars as $car) {
-                    try {
-                        Car::create($car);
-                    } catch (\Exception $e) {
-                        Log::error("Hiba az autó beszúrásakor: " . $e->getMessage(), ['data' => $car]);
-                    }
-                }
-            } catch (\Exception $e) {
-                Log::error("Hiba a cars.json beolvasásakor: " . $e->getMessage());
+            $cars = json_decode(file_get_contents(database_path('seeders/data/cars.json')), true);
+            foreach ($cars as $car) {
+                Car::create($car);
             }
         }
 
